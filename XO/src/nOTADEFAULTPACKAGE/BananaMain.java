@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class BananaMain {
 	private static String[] ps = {"Elon61", "Jesus0001", "Danko17"};
-	private static int pn = 2;//ps.length;//ps.length;
 	private static char[] pc = {'Ω', '†', 'δ'};
+	private static int pn = 2;//ps.length;//ps.length;
 	
 	private static Player[] blade(int nuuu) { // create players
 		Player[] pa = new Player[nuuu];
