@@ -15,12 +15,12 @@ public class CatSwing extends JFrame{
 
 	public CatSwing() {
 		setLayout(null);
-		
+
 		startRiceMaker();
-		
+
 		setVisible(true);
 	}
-	
+
 	private void startRiceMaker() {
 		THIS = this;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -28,40 +28,40 @@ public class CatSwing extends JFrame{
 		int scy = screenSize.height;
 		setSize(scx * 9 / 10, scy * 9/10);
 		setLocation(scx / 20, scy / 20);
-		
+
 		iks();
-		
+
 		clickyThings();
 	}
-	
+
 	private void clickyThings() {
 		JButton star = new JButton("START THE GREATEST GAME EVER");
 		star.setBounds(300, 100, 200, 30);
 		star.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Softcandy teemo = new Softcandy(THIS, x, y, z);
+				Softcandy teemo = new Softcandy(THIS, x, y, z, new Player[] {});
 			}
-			
+
 		});
 		//star.setBackground();
 		this.add(star);
-		
+
 		JButton opt = new JButton("MAKE IT ALL THAT MUCH BETTER");
 		opt.setBounds(300, 250, 200, 30);
 		opt.setDefaultCapable(true);
 		this.add(opt);
-		
+
 		JButton ks = new JButton("KILL ALL THE NEWBS");
 		ks.setBounds(300, 400, 200, 30);
 		ks.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
-				
+
 			}
 		});
 		this.add(ks);
 	}
-	
+
 	private void iks() {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -69,13 +69,13 @@ public class CatSwing extends JFrame{
 					}
 		});
 	}
-	
+
 	public static void cleer(JFrame dis) {
 		dis.getContentPane().removeAll();
 		dis.revalidate();
 		dis.repaint();
 	}
-	
+
 	private JFrame getThis() {
 		return this;
 	}
