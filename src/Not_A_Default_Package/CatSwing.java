@@ -39,7 +39,7 @@ public class CatSwing extends JFrame{
 		star.setBounds(300, 100, 200, 30);
 		star.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Softcandy teemo = new Softcandy(THIS, x, y, z, new Player[] {});
+				Softcandy teemo = new Softcandy(THIS, 100, 100, z, new Player[] {new Player("banana", 'o')});
 			}
 
 		});

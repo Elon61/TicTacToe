@@ -1,21 +1,12 @@
 package Not_A_Default_Package;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 public class Softcandy {
 	JFrame frame;
@@ -66,18 +57,52 @@ public class Softcandy {
 		        for(int x = 0; x <= blx; x += cell_size) {
 		        	g.fillRect(x, 0, LINE_THICKNESS, bly + LINE_THICKNESS);
 		        }
-		        
+
 		        for(int y = 0; y <= bly; y += cell_size) {
 		        	g.fillRect(0, y, blx + LINE_THICKNESS, LINE_THICKNESS);
-		        }    
-		    }
+		        }
+
+
+                Cellulose[][] b = sushi.getBoard();
+                Rectangle bounds = g.getClipBounds();
+                int x = (int)bounds.getX();
+                int y = (int)bounds.getY();
+
+                int dcell_x = (x / cell_size);
+                int dcell_x2 = (int)((x + bounds.getWidth() + cell_size - 1) / cell_size);
+                int dcell_y = (y / cell_size);
+                int dcell_y2 = (int)((y + bounds.getHeight() + cell_size - 1) / cell_size);
+
+                System.out.println("Rag");
+                for(int i = dcell_x; i < Math.min(dcell_x2, b.length); i++) {
+                    for(int j = dcell_y; j < Math.min(dcell_y2, b[i].length); j++) {
+                        if(!b[i][j].isFiber()){
+                            g.setColor(new Color((i * 256) / (b.length), (j * 256) / (b[i].length), (j * i * 256) / (b.length * b[i].length)));
+                            g.fillRect(i * cell_size, j * cell_size, cell_size / 2, cell_size / 2);
+                        }
+                    }
+                }
+
+//                Cellulose[][] b = sushi.getBoard();
+//                for(int i = 0; i < b.length; i++) {
+//                    for(int j = 0; j < b[i].length; j++) {
+//                        if(!b[i][j].isFiber()){
+//                            g.setColor(new Color((i * 256) / (b.length), (j * 256) / (b[i].length), (j * i * 256) / (b.length * b[i].length)));
+//                            g.fillRect(i * cell_size, j * cell_size, cell_size / 2, cell_size / 2);
+//                        }
+//                    }
+//                }
+            }
 		};
+
 		test.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent l) {
 				int x = l.getX();
 				int y = l.getY();
 				x = x / cell_size;
 				y = y / cell_size;
+				sushi.play(x, y, players[0]);
+				test.repaint(x * cell_size, y * cell_size, cell_size / 2, cell_size / 2);
 				
 				
 			}
@@ -91,6 +116,8 @@ public class Softcandy {
 		test.setAutoscrolls(true);
 		//scrollFrame.getViewport().setViewPosition(new Point(((3 * sx / 4 - 16) - (sx / 4)),0));
 		scrollFrame.setBounds(sx / 3, sy / (sy / 8),2 * sx / 3 - 16, sy - 4 * sy / (sy / 8) - 16); // this -16 is probably an inset too and i should use insets because.
+        scrollFrame.getVerticalScrollBar().setUnitIncrement(16);
+        scrollFrame.getHorizontalScrollBar().setUnitIncrement(16);
 		frame.add(scrollFrame);
 		frame.revalidate();
 		frame.repaint();

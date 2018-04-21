@@ -17,7 +17,7 @@ public class Sashimi {
 		return board.brocoliest(p, x, y);
 	}
 	
-	public Celullose[][] getBoard() {
+	public Cellulose[][] getBoard() {
 		return board.getBrocoli();
 	}
 }
