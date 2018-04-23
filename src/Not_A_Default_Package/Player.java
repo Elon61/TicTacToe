@@ -3,14 +3,16 @@ package Not_A_Default_Package;
 public class Player {
 	private char pp;
 	private String pn;
+	private String pic;
 	
 	public Player(String pn, char pp) { // Can play.
 		this.pp = pp;
 		this.pn = pn;
 	}
 	
-	public Player(String pn, int PLAYER_ICON) { // Can play.
+	public Player(String pn, String pic) { // Can play.
 		this.pn = pn;
+		this.pic = pic;
 	}
 	
 	public char getChar() {
@@ -28,4 +30,8 @@ public class Player {
 	public String toString() {
 		return pn;
 	}
+
+    public String getPicLink() {
+        return pic;
+    }
 }

@@ -8,10 +8,13 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class CatSwing extends JFrame{
-	int x = 5; // board size
-	int y = 5; // board size
+	int x = 15; // board size
+	int y = 15; // board size
 	int z = 5; // win size
 	JFrame THIS;
+	private String[] plnames = {"nam1", "nam2"};
+	private String[] plimg = {"1", "2", "3"};
+	//private String[] plimg = {"image.png", "image2.png"};
 
 	public CatSwing() {
 		setLayout(null);
@@ -39,7 +42,7 @@ public class CatSwing extends JFrame{
 		star.setBounds(300, 100, 200, 30);
 		star.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Softcandy teemo = new Softcandy(THIS, 100, 100, z, new Player[] {new Player("banana", 'o')});
+				Softcandy teemo = new Softcandy(THIS, x, y, z, Sashimi.blade(plnames.length, plnames, plimg));
 			}
 
 		});

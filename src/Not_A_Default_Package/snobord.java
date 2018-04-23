@@ -2,7 +2,7 @@ package Not_A_Default_Package;
 
 public class snobord {
 	private int x, y, z; // z is winning lenght
-	private Cellulose[][] brocoli;
+	private Celullose[][] brocoli;
 	snobord(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -10,11 +10,11 @@ public class snobord {
 			this.z = z;
 		}
 		else this.z = (Math.min(x, y));
-		brocoli = new Cellulose[x][y];
+		brocoli = new Celullose[x][y];
 		cook_brocoli();
 	}
 	
-	public Cellulose[][] getBrocoli() {
+	public Celullose[][] getBrocoli() {
 		return brocoli;
 	}
 	
@@ -70,7 +70,7 @@ public class snobord {
 	private void cook_brocoli() {
 		for(int x = this.x; x!=0; x--) {
 			for(int y = this.y; y!=0; y--) {
-				brocoli[x - 1][y - 1] = new Cellulose(x, y, new Player("DefaultPlayer", '0'));
+				brocoli[x - 1][y - 1] = new Celullose(x, y, new Player("DefaultPlayer", '0'));
 //				System.out.println(brocoli[x - 1][y - 1]);
 			}
 		}

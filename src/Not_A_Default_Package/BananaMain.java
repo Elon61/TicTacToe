@@ -7,7 +7,7 @@ public class BananaMain {
 	private static char[] pc = {'Ω', '†', 'δ'};
 	private static int pn = 2;//ps.length;//ps.length;
 	
-	private static Player[] blade(int nuuu) { // create players
+	public static Player[] blade(int nuuu) { // create players
 		Player[] pa = new Player[nuuu];
 		for(int i = 0; i < nuuu; i++) {
 			pa[i] = new Player(ps[i], pc[i]);

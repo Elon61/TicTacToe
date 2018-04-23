@@ -2,22 +2,44 @@ package Not_A_Default_Package;
 
 public class Sashimi {
 	snobord board;
-	int x, y, z;
+	int x, y, z, p;
+	Player[] players;
 
-	public Sashimi(int x, int y, int z) { // board size and win size
-		this.x = x; this.y = y; this.z = z;
+	public Sashimi(int x, int y, int z, Player[] players) { // board size and win size
+		this.x = x; this.y = y; this.z = z; this.players = players; this.p = 0;
 		board = new snobord(x, y, z);
 	}
-	
-	public boolean play(int x, int y, Player p) { // played location and player who played there
-		return board.playBrocoli(x, y, p);
+
+	public boolean play(int x, int y) { // played location and player who played there
+		return board.playBrocoli(x, y, players[p]);
 	}
-	
-	public boolean win(int x, int y, Player p) {
-		return board.brocoliest(p, x, y);
+
+	public void nextPlayer(){
+		p = (p + 1) % players.length;
 	}
-	
-	public Cellulose[][] getBoard() {
-		return board.getBrocoli();
+
+	public boolean win(int x, int y) {
+		return board.brocoliest(players[p], x, y);
 	}
+
+	public snobord getBoard() {
+		return board;
+	}
+
+    public void reset() {
+        board = new snobord(x, y, z);
+        p = 0;
+    }
+
+    public Celullose[][] getCellBoard() {
+        return board.getBrocoli();
+    }
+
+    public static Player[] blade(int nuuu, String[] pls, String[] picz) { // create players
+        Player[] pa = new Player[nuuu];
+        for(int i = 0; i < nuuu; i++) {
+            pa[i] = new Player(pls[i], picz[i]);
+        }
+        return pa;
+    }
 }

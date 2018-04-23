@@ -1,9 +1,9 @@
 package Not_A_Default_Package;
 
-public class Cellulose {
+public class Celullose {
 	private Player pp;
 	private int x, y;
-	public Cellulose(int x, int y, Player pp) {
+	public Celullose(int x, int y, Player pp) {
 		this.x = x;
 		this.y = y;
 		this.pp = pp;
