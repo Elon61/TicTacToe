@@ -1,9 +1,6 @@
 package Not_A_Default_Package;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -39,7 +36,7 @@ public class CatSwing extends JFrame{
 
 	private void clickyThings() {
 		JButton star = new JButton("START THE GREATEST GAME EVER");
-		star.setBounds(300, 100, 200, 30);
+		star.setBounds(px(35), py(15), px(20), py(5));
 		star.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Softcandy teemo = new Softcandy(THIS, x, y, z, Sashimi.blade(plnames.length, plnames, plimg));
@@ -50,12 +47,12 @@ public class CatSwing extends JFrame{
 		this.add(star);
 
 		JButton opt = new JButton("MAKE IT ALL THAT MUCH BETTER");
-		opt.setBounds(300, 250, 200, 30);
+		opt.setBounds(px(35), py(35), px(20), py(5));
 		opt.setDefaultCapable(true);
 		this.add(opt);
 
 		JButton ks = new JButton("KILL ALL THE NEWBS");
-		ks.setBounds(300, 400, 200, 30);
+		ks.setBounds(px(35), py(55), px(20), py(5));
 		ks.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -63,6 +60,13 @@ public class CatSwing extends JFrame{
 			}
 		});
 		this.add(ks);
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                ks.setBounds(px(35), py(55), px(20), py(5));
+                opt.setBounds(px(35), py(35), px(20), py(5));
+                star.setBounds(px(35), py(15), px(20), py(5));
+            }
+        });
 	}
 
 	private void iks() {
@@ -86,6 +90,14 @@ public class CatSwing extends JFrame{
 	public static void main(String[] args) {
 		CatSwing s = new CatSwing();
 
+	}
+
+	private int px(double percents) {
+		return (int)(this.getBounds().getWidth() * percents) / 100;
+	}
+
+	private int py(double percents) {
+		return (int)(this.getBounds().getHeight() * percents) / 100;
 	}
 
 }

@@ -181,14 +181,14 @@ public class Softcandy {
 		hummus.setText(teemo);
 		
 	}
-	
-	private int px(double percents) {
-		return (int)(sx * percents) / 100;
-	}
-	
-	private int py(double percents) {
-		return (int)(sy * percents) / 100;
-	}
+
+    private int px(double percents) {
+        return (int)(frame.getBounds().getWidth() * percents) / 100;
+    }urn
+
+        private int py(double percents) {
+            ret(int)(frame.getBounds().getHeight() * percents) / 100;
+    }
 	
 	private void iks(JPanel k) {
 		k.addMouseListener(new MouseAdapter() {
