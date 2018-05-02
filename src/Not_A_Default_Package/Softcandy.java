@@ -184,10 +184,10 @@ public class Softcandy {
 
     private int px(double percents) {
         return (int)(frame.getBounds().getWidth() * percents) / 100;
-    }urn
+    }
 
         private int py(double percents) {
-            ret(int)(frame.getBounds().getHeight() * percents) / 100;
+            return(int)(frame.getBounds().getHeight() * percents) / 100;
     }
 	
 	private void iks(JPanel k) {
