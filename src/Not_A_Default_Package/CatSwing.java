@@ -4,6 +4,8 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import static java.lang.Math.max;
+
 public class CatSwing extends JFrame{
 	int x = 15; // board size
 	int y = 15; // board size
@@ -65,8 +67,12 @@ public class CatSwing extends JFrame{
                 ks.setBounds(px(35), py(55), px(20), py(5));
                 opt.setBounds(px(35), py(35), px(20), py(5));
                 star.setBounds(px(35), py(15), px(20), py(5));
-                star.setFont(new Font(Font.DIALOG, Font.BOLD, (int)(px(1) * py(1) / ((px(1) + py(1)) * .33))));
-                System.out.println((int)(px(1) * py(1) / ((px(1) + py(1)) * .33)));
+                //Font mainFont = new Font(Font.DIALOG, Font.BOLD, (int)(px(1) * py(1) / ((px(1) + py(1)) * .33)));
+                Font mainFont = new Font(Font.DIALOG, Font.BOLD, max(px(15) / 15 - 1, 9));
+                // use a min from a x percent calc and a y pecent cal for font size, so that it never overflows in any direction
+                star.setFont(mainFont);
+                opt.setFont(mainFont);
+                ks.setFont(mainFont);
             }
         });
 	}
