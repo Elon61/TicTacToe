@@ -1,4 +1,4 @@
 package Not_A_Default_Package;
 
-public class Osmium {
+public class Osmium { // config window
 }
