@@ -1,16 +1,22 @@
 package Not_A_Default_Package;
-import java.awt.*;
-import java.awt.event.*;
-
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.Math.max;
 
-public class CatSwing extends JFrame{
+/**
+ * Main menu window
+ */
+public class CatSwing extends JFrame {
 	int x = 15; // board size
 	int y = 15; // board size
 	int z = 5; // win size
-	JFrame THIS;
 	private String[] plnames = {"nam1", "nam2"};
 	private String[] plimg = {"1", "2", "3"};
 	//private String[] plimg = {"image.png", "image2.png"};
@@ -24,7 +30,6 @@ public class CatSwing extends JFrame{
 	}
 
 	private void startRiceMaker() {
-		THIS = this;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int scx = screenSize.width;
 		int scy = screenSize.height;
@@ -37,47 +42,63 @@ public class CatSwing extends JFrame{
 	}
 
 	private void clickyThings() {
-		JButton star = new JButton("START THE GREATEST GAME EVER");
-		star.setBounds(px(35), py(15), px(20), py(5));
-		star.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Softcandy teemo = new Softcandy(THIS, x, y, z, Sashimi.blade(plnames.length, plnames, plimg));
-			}
+        JButton star = clickyStar();
+        JButton opt = clickyOpt();
+        JButton ks = clickyKs();
 
-		});
-		//star.setBackground();
-		this.add(star);
+        clickyResizeMagic(Arrays.asList(star, opt, ks));
 
-		JButton opt = new JButton("MAKE IT ALL THAT MUCH BETTER");
-		opt.setBounds(px(35), py(35), px(20), py(5));
-		opt.setDefaultCapable(true);
-		this.add(opt);
+        this.add(star);
+        this.add(opt);
+        this.add(ks);
 
-		JButton ks = new JButton("KILL ALL THE NEWBS");
-		ks.setBounds(px(35), py(55), px(20), py(5));
-		ks.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+    }
 
-			}
-		});
-		this.add(ks);
+    private void clickyResizeMagic(List<JButton> clickies) {
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
-                ks.setBounds(px(35), py(55), px(20), py(5));
-                opt.setBounds(px(35), py(35), px(20), py(5));
-                star.setBounds(px(35), py(15), px(20), py(5));
+                List<Integer> pyList = clickiesVerticalIndent(clickies.size());
+                //Font mainFont = new Font(Font.DIALOG, Font.BOLD, max(px(15) / 15 - 1, 9));
+                Font mainFont = new Font(Font.DIALOG, Font.BOLD, 15);
+
+                for(int i = 0; i < clickies.size(); i++){
+                    clickies.get(i).setBounds(px(35), pyList.get(i), px(20), py(5));
+                    clickies.get(i).setFont(mainFont);
+                }
                 //Font mainFont = new Font(Font.DIALOG, Font.BOLD, (int)(px(1) * py(1) / ((px(1) + py(1)) * .33)));
-                Font mainFont = new Font(Font.DIALOG, Font.BOLD, max(px(15) / 15 - 1, 9));
-                // use a min from a x percent calc and a y pecent cal for font size, so that it never overflows in any direction
-                star.setFont(mainFont);
-                opt.setFont(mainFont);
-                ks.setFont(mainFont);
+                // use a min from a x percent calc and a y percent cal for font size, so that it never overflows in any direction
+            }
+
+            private List<Integer> clickiesVerticalIndent(int clickies) {
+                //TODO Implement calculation thing
+                return Arrays.asList(py(30), py(40), py(50));
             }
         });
-	}
+    }
 
-	private void iks() {
+    private JButton clickyKs() {
+        JButton ks = new JButton("KILL ALL THE NEWBS");
+        ks.setBounds(px(35), py(55), px(20), py(5));
+        ks.addActionListener(e -> System.exit(0));
+        return ks;
+    }
+
+    private JButton clickyOpt() {
+        JButton opt = new JButton("MAKE IT ALL THAT MUCH BETTER");
+        opt.setBounds(px(35), py(35), px(20), py(5));
+        opt.setDefaultCapable(true);
+        return opt;
+    }
+
+    private JButton clickyStar() {
+        JButton star = new JButton("START THE GREATEST GAME EVER");
+        star.setBounds(px(35), py(15), px(20), py(5));
+        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(plnames.length, plnames, plimg)));
+        //star.setBackground();
+        return star;
+    }
+
+    private void iks() {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
@@ -85,22 +106,13 @@ public class CatSwing extends JFrame{
 		});
 	}
 
-	public static void cleer(JFrame dis) {
-		dis.getContentPane().removeAll();
-		dis.revalidate();
-		dis.repaint();
+	public void cleer() {
+		this.getContentPane().removeAll();
+        this.revalidate();
+        this.repaint();
 	}
 
-	private JFrame getThis() {
-		return this;
-	}
-
-	public static void main(String[] args) {
-		CatSwing s = new CatSwing();
-
-	}
-
-	private int px(double percents) {
+    private int px(double percents) {
 		return (int)(this.getBounds().getWidth() * percents) / 100;
 	}
 
@@ -108,4 +120,9 @@ public class CatSwing extends JFrame{
 		return (int)(this.getBounds().getHeight() * percents) / 100;
 	}
 
+    public static void main(String[] args) {
+        System.setProperty("sun.java2d.noddraw", Boolean.TRUE.toString());
+        CatSwing s = new CatSwing();
+
+    }
 }

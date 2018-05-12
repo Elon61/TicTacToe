@@ -31,7 +31,7 @@ public class Sashimi {
         p = 0;
     }
 
-    public Celullose[][] getCellBoard() {
+    public Cellulose[][] getCellBoard() {
         return board.getBrocoli();
     }
 

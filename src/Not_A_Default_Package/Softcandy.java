@@ -8,6 +8,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
+/**
+ * Main menu window
+ */
 public class Softcandy {
 	JFrame frame;
 	JPanel gamePanel;
@@ -20,7 +23,7 @@ public class Softcandy {
 	private Player[] players;
 	Sashimi sushi;
 
-	public Softcandy(JFrame frame, int x, int y, int z, Player[] players) {
+	public Softcandy(CatSwing frame, int x, int y, int z, Player[] players) {
 		sx = frame.getWidth(); sy = frame.getHeight();
 		this.frame = frame; this.x = x; this.y = y; this.z = z; this.blx = x * cell_size;
 		this.bly = y * cell_size; this.players = players;
@@ -31,7 +34,7 @@ public class Softcandy {
 		}
 		sushi = new Sashimi(x, y, z, players);
 		// sx, sy JFrame size. x, y = Board size in cells. blx,  bly board size in pixels
-		CatSwing.cleer(frame);
+        frame.cleer();
 		buildthedevil();
 		schnitzel();
 		teemo();
@@ -66,7 +69,7 @@ public class Softcandy {
 		        }
 
 
-                Celullose[][] b = sushi.getCellBoard();
+                Cellulose[][] b = sushi.getCellBoard();
                 Rectangle bounds = g.getClipBounds();
                 int x = (int)bounds.getX();
                 int y = (int)bounds.getY();
@@ -93,7 +96,7 @@ public class Softcandy {
                     }
                 }
 
-//                Celullose[][] b = sushi.getBoard();
+//                Cellulose[][] b = sushi.getBoard();
 //                for(int i = 0; i < b.length; i++) {
 //                    for(int j = 0; j < b[i].length; j++) {
 //                        if(!b[i][j].isFiber()){
