@@ -1,10 +1,17 @@
 package Not_A_Default_Package;
+import sun.audio.AudioData;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+import sun.audio.ContinuousAudioDataStream;
+
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,6 +94,7 @@ public class CatSwing extends JFrame {
         JButton opt = new JButton("MAKE IT ALL THAT MUCH BETTER");
         opt.setBounds(px(35), py(35), px(20), py(5));
         opt.setDefaultCapable(true);
+        //opt.addActionListener(e -> music());
         return opt;
     }
 
