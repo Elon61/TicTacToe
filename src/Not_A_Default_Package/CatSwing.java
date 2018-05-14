@@ -1,21 +1,15 @@
 package Not_A_Default_Package;
-import sun.audio.AudioData;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import sun.audio.ContinuousAudioDataStream;
-
-import javax.sound.sampled.AudioInputStream;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
-
-import static java.lang.Math.max;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 /**
  * Main menu window
@@ -94,7 +88,7 @@ public class CatSwing extends JFrame {
         JButton opt = new JButton("MAKE IT ALL THAT MUCH BETTER");
         opt.setBounds(px(35), py(35), px(20), py(5));
         opt.setDefaultCapable(true);
-        //opt.addActionListener(e -> music());
+        //opt.addActionListener(e -> moozic());
         return opt;
     }
 
@@ -114,6 +108,18 @@ public class CatSwing extends JFrame {
 		});
 	}
 
+	public static void moozic(){
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("C:\\Users\\hp250G3-00\\IdeaProjects\\TicTacToe\\src\\Not_A_Default_Package\\noc.wav").getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
+
 	public void cleer() {
 		this.getContentPane().removeAll();
         this.revalidate();
@@ -129,7 +135,6 @@ public class CatSwing extends JFrame {
 	}
 
     public static void main(String[] args) {
-        System.setProperty("sun.java2d.noddraw", Boolean.TRUE.toString());
         CatSwing s = new CatSwing();
 
     }
