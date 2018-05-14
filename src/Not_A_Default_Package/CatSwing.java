@@ -2,6 +2,8 @@ package Not_A_Default_Package;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -20,13 +22,13 @@ public class CatSwing extends JFrame {
 	int z = 5; // win size
 	private String[] plnames = {"nam1", "nam2"};
 	private String[] plimg = {"1", "2", "3"};
-	//private String[] plimg = {"image.png", "image2.png"};
+    private java.awt.geom.GeneralPath gp;
+    //private String[] plimg = {"image.png", "image2.png"};
 
 	public CatSwing() {
 		setLayout(null);
-
 		startRiceMaker();
-
+		sizeMagic();
 		setVisible(true);
 	}
 
@@ -36,9 +38,7 @@ public class CatSwing extends JFrame {
 		int scy = screenSize.height;
 		setSize(scx * 9 / 10, scy * 9/10);
 		setLocation(scx / 20, scy / 20);
-
 		iks();
-
 		clickyThings();
 	}
 
@@ -63,10 +63,9 @@ public class CatSwing extends JFrame {
                 Font mainFont = new Font(Font.DIALOG, Font.BOLD, 15);
 
                 for(int i = 0; i < clickies.size(); i++){
-                    clickies.get(i).setBounds(px(35), pyList.get(i), px(20), py(5));
+                    clickies.get(i).setBounds(px(35), pyList.get(i), px(30), py(5));
                     clickies.get(i).setFont(mainFont);
                 }
-                //Font mainFont = new Font(Font.DIALOG, Font.BOLD, (int)(px(1) * py(1) / ((px(1) + py(1)) * .33)));
                 // use a min from a x percent calc and a y percent cal for font size, so that it never overflows in any direction
             }
 
@@ -107,6 +106,56 @@ public class CatSwing extends JFrame {
 					}
 		});
 	}
+
+    @Override
+    public void paint(Graphics g){
+        super.paint(g);
+        int w = getWidth();
+        int h = getHeight();
+
+        gp = new java.awt.geom.GeneralPath();
+        gp.moveTo(w - 17, h);
+        gp.lineTo(w, h - 17);
+        gp.lineTo(w, h);
+        gp.closePath();
+    };
+
+    private void sizeMagic() {
+        MouseInputListener resizeHook = new MouseInputAdapter() {
+            private Point startPos = null;
+
+            public void mousePressed(MouseEvent e) {
+                if (gp.contains(e.getPoint()))
+                    startPos = new Point(getWidth()-e.getX(), getHeight()-e.getY());
+            }
+
+            public void mouseReleased(MouseEvent mouseEvent) {
+                startPos = null;
+            }
+
+            public void mouseMoved(MouseEvent e) {
+                if (gp.contains(e.getPoint()))
+                    setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
+                else
+                    setCursor(Cursor.getDefaultCursor());
+            }
+
+            public void mouseDragged(MouseEvent e) {
+                if (startPos != null) {
+
+                    int dx = e.getX() + startPos.x;
+                    int dy = e.getY() + startPos.y;
+
+                    setSize(dx, dy);
+                    repaint();
+                }
+            }
+        };
+
+        this.addMouseMotionListener(resizeHook);
+        this.addMouseListener(resizeHook);
+        this.setResizable(false);
+    }
 
 	public static void moozic(){
         try {
