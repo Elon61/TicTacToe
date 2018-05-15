@@ -1,6 +1,4 @@
 package Not_A_Default_Package;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -19,7 +17,7 @@ import javax.sound.sampled.Clip;
 public class CatSwing extends JFrame {
 	int x = 15; // board size
 	int y = 15; // board size
-	int z = 5; // win size
+	private int z = 5; // win size
 	private String[] plnames = {"nam1", "nam2"};
 	private String[] plimg = {"1", "2", "3"};
     private java.awt.geom.GeneralPath gp;
@@ -71,6 +69,7 @@ public class CatSwing extends JFrame {
 
             private List<Integer> clickiesVerticalIndent(int clickies) {
                 //TODO Implement calculation thing
+
                 return Arrays.asList(py(30), py(40), py(50));
             }
         });
@@ -157,12 +156,13 @@ public class CatSwing extends JFrame {
         this.setResizable(false);
     }
 
-	public static void moozic(){
+	private static void moozic(){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("C:\\Users\\hp250G3-00\\IdeaProjects\\TicTacToe\\src\\Not_A_Default_Package\\noc.wav").getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
-            clip.start();
+            clip.loop(99);
+            //clip.start();
         } catch(Exception ex) {
             System.out.println("Error with playing sound.");
             ex.printStackTrace();
