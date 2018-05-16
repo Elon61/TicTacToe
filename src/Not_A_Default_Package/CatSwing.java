@@ -69,6 +69,7 @@ public class CatSwing extends JFrame {
 
             private List<Integer> clickiesVerticalIndent(int clickies) {
                 //TODO Implement calculation thing
+                int start = 50;// middle of the screen i guess, then i need to extend to the sides, so; minimum space between buttons, maximum space between buttons, and rest is screen size / number of buttons?
 
                 return Arrays.asList(py(30), py(40), py(50));
             }
