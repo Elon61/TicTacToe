@@ -118,7 +118,7 @@ public class CatSwing extends JFrame {
         gp.lineTo(w, h - 17);
         gp.lineTo(w, h);
         gp.closePath();
-    };
+    }
 
     private void sizeMagic() {
         MouseInputListener resizeHook = new MouseInputAdapter() {
