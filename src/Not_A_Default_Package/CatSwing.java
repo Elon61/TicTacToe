@@ -132,10 +132,6 @@ public class CatSwing extends JFrame {
         gp.closePath();
     }
 
-    public void repaint(long tm, int x, int y, int width, int height) {
-        super.repaint(tm, x,  y, width, height);
-    }
-
     private void sizeMagic() {
         MouseInputListener resizeHook = new MouseInputAdapter() {
             private Point startPos = null;
@@ -168,9 +164,9 @@ public class CatSwing extends JFrame {
             }
         };
 
-        //this.addMouseMotionListener(resizeHook);
-        //this.addMouseListener(resizeHook);
-        //this.setResizable(false);
+        this.addMouseMotionListener(resizeHook);
+        this.addMouseListener(resizeHook);
+        this.setResizable(false);
     }
 
 	private static void moozic(){
