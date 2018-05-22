@@ -5,6 +5,7 @@ import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.sound.sampled.AudioInputStream;
@@ -69,9 +70,20 @@ public class CatSwing extends JFrame {
 
             private List<Integer> clickiesVerticalIndent(int clickies) {
                 //TODO Implement calculation thing
-                int start = 50;// middle of the screen i guess, then i need to extend to the sides, so; minimum space between buttons, maximum space between buttons, and rest is screen size / number of buttons?
-
-                return Arrays.asList(py(30), py(40), py(50));
+                List<Integer> list = new ArrayList<>();
+                //clickies = 4;
+                int buttonArea = py(80);
+                double buttons = clickies / 2;
+                //int buttonSpacing = (Math.max(Math.min((buttonArea * 80 / 100) / clickies, py(10)), 100)) / (buttonArea / 100);
+                int buttonSpacing = 10;
+                double buttonSpan = clickies * buttonSpacing;
+                int buttonPlace = (int)(50 - buttonSpan / 2);
+                for(int i = 0; i < clickies; i++){
+                    list.add(py(buttonPlace));
+                    buttonPlace += buttonSpacing;
+                }
+                System.out.println(list);
+                return list;// middle of the screen i guess, then i need to extend to the sides, so; minimum space between buttons, maximum space between buttons, and rest is screen size / number of buttons?
             }
         });
     }
@@ -183,6 +195,10 @@ public class CatSwing extends JFrame {
 	private int py(double percents) {
 		return (int)(this.getBounds().getHeight() * percents) / 100;
 	}
+
+    private int pof(double percents, double num) {
+        return (int)(num * percents) / 100;
+    }
 
     public static void main(String[] args) {
         CatSwing s = new CatSwing();
