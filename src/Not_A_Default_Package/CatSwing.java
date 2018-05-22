@@ -87,7 +87,7 @@ public class CatSwing extends JFrame {
         JButton opt = new JButton("MAKE IT ALL THAT MUCH BETTER");
         opt.setBounds(px(35), py(35), px(20), py(5));
         opt.setDefaultCapable(true);
-        //opt.addActionListener(e -> moozic());
+        opt.addActionListener(e -> moozic());
         return opt;
     }
 

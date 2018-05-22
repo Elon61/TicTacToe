@@ -73,6 +73,18 @@ public class Softcandy {
 		        	g.fillRect(0, y, blx + LINE_THICKNESS, LINE_THICKNESS);
 		        }
 
+                try {
+                    BufferedImage image = ImageIO.read(new File("C:\\Users\\hp250G3-00\\Downloads\\Untitled.png"));
+                    for(int x = LINE_THICKNESS; x < blx; x += cell_size){
+                        for(int y = LINE_THICKNESS;y < bly; y += cell_size){
+                            g.drawImage(image, x, y,
+                                    cell_size - LINE_THICKNESS, cell_size - LINE_THICKNESS,
+                                    null);
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 Cellulose[][] b = sushi.getCellBoard();
                 Rectangle bounds = g.getClipBounds();
@@ -136,8 +148,6 @@ public class Softcandy {
 		});
 		//test.setBackground(Color.darkGray);
 		JScrollPane scrollFrame = new JScrollPane(gamePanel);
-		System.out.println(blx);
-		System.out.println(bly);
 		gamePanel.setPreferredSize(new Dimension(blx + 2,bly + 2));
 		//scrollFrame.setPreferredSize(new Dimension(8000,3000));
 		gamePanel.setAutoscrolls(true);
@@ -155,7 +165,6 @@ public class Softcandy {
 	private void schnitzel() {
 		Insets insets = frame.getInsets();
 		JLabel labane = new JLabel("Hsrhgbsfbeh", SwingConstants.CENTER);
-		System.out.println(insets.top);
 		labane.setBounds(sx / 20, 0, 2 * sx / 9, 100);
 		labane.setFont(new Font(Font.SERIF, Font.ITALIC, 20));
 		frame.add(labane);
