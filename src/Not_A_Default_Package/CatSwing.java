@@ -91,6 +91,7 @@ public class CatSwing extends JFrame {
     private JButton clickyKs() {
         JButton ks = new JButton("KILL ALL THE NEWBS");
         ks.setBounds(px(35), py(55), px(20), py(5));
+        ks.setToolTipText("Text you choose");
         ks.addActionListener(e -> System.exit(0));
         return ks;
     }
