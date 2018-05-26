@@ -19,8 +19,8 @@ public class CatSwing extends JFrame {
 	int x = 15; // board size
 	int y = 15; // board size
 	private int z = 5; // win size
-	private String[] plnames = {"nam1", "nam2"};
-	private String[] plimg = {"1", "2", "3"};
+	private String[] plnames = {"Moshe", "Moshe's friend teemo"};
+	private String[] plimg = {"1", "2"};
     private java.awt.geom.GeneralPath gp;
     //private String[] plimg = {"image.png", "image2.png"};
 
@@ -57,35 +57,45 @@ public class CatSwing extends JFrame {
     private void clickyResizeMagic(List<JButton> clickies) {
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
-                List<Integer> pyList = clickiesVerticalIndent(clickies.size());
+                int buttonSize = 5;
+                List<Integer> pyList = clickiesVerticalIndent(clickies.size(), buttonSize);
                 //Font mainFont = new Font(Font.DIALOG, Font.BOLD, max(px(15) / 15 - 1, 9));
                 Font mainFont = new Font(Font.DIALOG, Font.BOLD, 15);
 
                 for(int i = 0; i < clickies.size(); i++){
-                    clickies.get(i).setBounds(px(35), pyList.get(i), px(30), py(5));
+                    clickies.get(i).setBounds(px(35), pyList.get(i), px(30), py(buttonSize));
                     clickies.get(i).setFont(mainFont);
                 }
-                // use a min from a x percent calc and a y percent cal for font size, so that it never overflows in any direction
             }
 
-            private List<Integer> clickiesVerticalIndent(int clickies) {
+            private List<Integer> clickiesVerticalIndent(int clickies, int buttonSize) {
                 //TODO Implement calculation thing
                 List<Integer> list = new ArrayList<>();
-                //clickies = 4;
-                int buttonArea = py(80);
-                double buttons = clickies / 2;
-                //int buttonSpacing = (Math.max(Math.min((buttonArea * 80 / 100) / clickies, py(10)), 100)) / (buttonArea / 100);
-                int buttonSpacing = 10;
+                double buttonPlace;
+                int buttonArea = 80;
+                double buttonSpacing = clam(1.0, buttonSize * 1.8, (double)(buttonArea / clickies));
                 double buttonSpan = clickies * buttonSpacing;
-                int buttonPlace = (int)(50 - buttonSpan / 2);
+                if(clickies % 2 == 0){
+                    buttonPlace = (int)(50 - buttonSpan / 2);
+                }
+                else{
+                    buttonPlace = (50 - (clickies / 2) * buttonSpacing - buttonSize + 1);
+                }
                 for(int i = 0; i < clickies; i++){
                     list.add(py(buttonPlace));
                     buttonPlace += buttonSpacing;
                 }
-                System.out.println(list);
                 return list;// middle of the screen i guess, then i need to extend to the sides, so; minimum space between buttons, maximum space between buttons, and rest is screen size / number of buttons?
             }
         });
+    }
+
+    private JButton clickyStar() {
+        JButton star = new JButton("START THE GREATEST GAME EVER");
+        star.setBounds(px(35), py(15), px(20), py(5));
+        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(plnames.length, plnames, plimg)));
+        //star.setBackground();
+        return star;
     }
 
     private JButton clickyKs() {
@@ -100,16 +110,9 @@ public class CatSwing extends JFrame {
         JButton opt = new JButton("MAKE IT ALL THAT MUCH BETTER");
         opt.setBounds(px(35), py(35), px(20), py(5));
         opt.setDefaultCapable(true);
-        opt.addActionListener(e -> moozic());
+        //opt.addActionListener(e -> moozic());
+        opt.addActionListener(e -> new Osmium(this));
         return opt;
-    }
-
-    private JButton clickyStar() {
-        JButton star = new JButton("START THE GREATEST GAME EVER");
-        star.setBounds(px(35), py(15), px(20), py(5));
-        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(plnames.length, plnames, plimg)));
-        //star.setBackground();
-        return star;
     }
 
     private void iks() {
@@ -200,6 +203,10 @@ public class CatSwing extends JFrame {
     private int pof(double percents, double num) {
         return (int)(num * percents) / 100;
     }
+
+    public static double clam(double min, double max, double num){
+	    return Math.max(min, Math.min(max, num));
+	}
 
     public static void main(String[] args) {
         CatSwing s = new CatSwing();

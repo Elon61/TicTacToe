@@ -42,4 +42,8 @@ public class Sashimi {
         }
         return pa;
     }
+
+    public Player getPlayer() {
+        return players[p];
+    }
 }
