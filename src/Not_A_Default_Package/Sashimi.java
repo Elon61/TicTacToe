@@ -35,10 +35,18 @@ public class Sashimi {
         return board.getBrocoli();
     }
 
-    public static Player[] blade(int nuuu, String[] pls, String[] picz) { // create players
+    public static Player[] blade(int nuuu, String[] pls, String[] picz, int[] plc) { // create players
         Player[] pa = new Player[nuuu];
         for(int i = 0; i < nuuu; i++) {
-            pa[i] = new Player(pls[i], picz[i]);
+            pa[i] = new Player(pls[i], picz[i], plc[i]);
+        }
+        return pa;
+    }
+
+    public static Player[] blade(int nmp) { // create players
+        Player[] pa = new Player[nmp];
+        for(int i = 0; i < nmp; i++) {
+            pa[i] = new Player(String.valueOf(i), "null", i);
         }
         return pa;
     }

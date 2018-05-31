@@ -21,6 +21,7 @@ public class CatSwing extends JFrame {
 	private int z = 5; // win size
 	private String[] plnames = {"Moshe", "Moshe's friend teemo"};
 	private String[] plimg = {"1", "2"};
+	private int[] plc = {1, 2};
     private java.awt.geom.GeneralPath gp;
     //private String[] plimg = {"image.png", "image2.png"};
 
@@ -93,7 +94,8 @@ public class CatSwing extends JFrame {
     private JButton clickyStar() {
         JButton star = new JButton("START THE GREATEST GAME EVER");
         star.setBounds(px(35), py(15), px(20), py(5));
-        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(plnames.length, plnames, plimg)));
+        //star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(plnames.length, plnames, plimg, plc)));
+        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(20)));
         //star.setBackground();
         return star;
     }

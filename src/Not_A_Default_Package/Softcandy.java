@@ -1,18 +1,15 @@
 package Not_A_Default_Package;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
 
 /**
  * Main menu window
@@ -27,6 +24,8 @@ public class Softcandy {
     final String[] PLAYER = {"teemo", "jesus", "dan"};
     private Player[] players;
     Sashimi sushi;
+    private int[] shadeMin = {0, 255, 255}; // RGBmin
+    private int[] shadeMax = {255, 0, 255}; // RGBmin
 
     public Softcandy(CatSwing frame, int x, int y, int z, Player[] players) {
         sx = frame.getWidth(); sy = frame.getHeight();
@@ -90,6 +89,13 @@ public class Softcandy {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.setColor(Color.black);
+                BufferedImage img = null;
+                BufferedImage cimg;
+                try {
+                    img = ImageIO.read(new File("src/Not_A_Default_Package/tile.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 for(int x = 0; x <= blx; x += cell_size) {
                     g.fillRect(x, 0, LINE_THICKNESS, bly + LINE_THICKNESS);
                 }
@@ -98,17 +104,12 @@ public class Softcandy {
                     g.fillRect(0, y, blx + LINE_THICKNESS, LINE_THICKNESS);
                 }
 
-                try {
-                    BufferedImage image = ImageIO.read(new File("src/Not_A_Default_Package/tile.png"));
-                    for(int x = LINE_THICKNESS; x < blx; x += cell_size){
-                        for(int y = LINE_THICKNESS;y < bly; y += cell_size){
-                            g.drawImage(image, x, y,
-                                    cell_size - LINE_THICKNESS, cell_size - LINE_THICKNESS,
-                                    null);
-                        }
+                for(int x = LINE_THICKNESS; x < blx; x += cell_size){
+                    for(int y = LINE_THICKNESS;y < bly; y += cell_size){
+                        g.drawImage(img, x, y,
+                                cell_size - LINE_THICKNESS, cell_size - LINE_THICKNESS,
+                                null);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
 
                 Cellulose[][] b = sushi.getCellBoard();
@@ -120,33 +121,78 @@ public class Softcandy {
                 int dcell_x2 = (int)((x + bounds.getWidth() + cell_size - 1) / cell_size);
                 int dcell_y = (y / cell_size);
                 int dcell_y2 = (int)((y + bounds.getHeight() + cell_size - 1) / cell_size);
-                int ikt; int xStart; int yStart; int recWidth; int recHeight;
+                int player_colour; int xStart; int yStart; int recWidth; int recHeight;
                 for(int i = dcell_x; i < Math.min(dcell_x2, b.length); i++) {
                     for(int j = dcell_y; j < Math.min(dcell_y2, b[i].length); j++) {
                         if(!b[i][j].isFiber()){
-                            //g.setColor(new Color( (j * i * 256) / (b.length * b[i].length), (i * 256) / (b.length), (j * 256) / (b[i].length)));
-                            ikt =  Integer.valueOf((b[i][j].getP().getPicLink()));
+                            player_colour = (b[i][j].getP().getColour());
                             xStart = i * cell_size + LINE_THICKNESS;
                             yStart = j * cell_size + LINE_THICKNESS;
                             recWidth = cell_size - LINE_THICKNESS;
                             recHeight = cell_size - LINE_THICKNESS;
-                            g.setColor(new Color((ikt * 256 - 1) / (players.length), (ikt * 128 - 1) / (players.length), (ikt * 256 - 1) / (players.length)));
+                            g.setColor(rainbow(player_colour));
                             g.fillRect(xStart, yStart, recWidth, recHeight);
-
-                            //g.drawImage(,i * cell_size, j * cell_size);
+                            cimg = colourImage(img, argbToArr(g.getColor().getRGB()), g.getColor().getRGB());
+                            g.drawImage(cimg, xStart, yStart,
+                                    recWidth, recHeight,
+                                    null);
                         }
                     }
                 }
             }
+
+            private BufferedImage colourImage(BufferedImage img, int[] colour, int eye) {
+                int[] xy; int[] pixor; int argb;
+                for(int i = 0; i < img.getHeight(); i++){
+                    for(int j = 0; j < img.getWidth(); j++){
+                        xy = new int[] {i, j};
+                        argb = img.getRGB(xy[0], xy[1]);
+                        pixor = argbToArr(argb);
+                        pixor = colourPix(pixor, colour);
+                        img.setRGB(xy[0], xy[1], arrToArgb(pixor));
+                    }
+                }
+                return img;
+            }
+
+            private int[] colourPix(int[] data, int[] colour) {
+                if(data[0] == 0){
+                    return data;
+                }
+                double colourIntensity;
+                colourIntensity = (colourCurve(data[1])) / 255.;
+                return new int[] {data[0], (int)(colour[1] * colourIntensity), (int)(colour[2] * colourIntensity), (int)(colour[3] * colourIntensity)};
+            }
+
+            private double colourCurve(double colourStuff) {
+                return (Math.pow(colourStuff, 2) / 255);
+            }
+
+            private Color rainbow(int pln) {
+                return new Color(shadeMin[0] + (pln * (shadeMax[0] - shadeMin[0]) / players.length), shadeMin[1] + (pln * (shadeMax[1] - shadeMin[1]) / players.length), shadeMin[2] + (pln * (shadeMax[2] - shadeMin[2])) / (players.length));
+            }
+
+            private int[] argbToArr(int argb) {
+                return new int[] {(argb>>24) & 0xff, (argb>>16) & 0xff, (argb>>8) & 0xff, argb & 0xff};
+            }
+
+            private int arrToArgb(int[] arr) { // arr is A R G B
+                return (arr[0]<<24) | (arr[1]<<16)| (arr[2]<<8) | arr[3] ;
+            }
         };
 
-        gamePanel.addMouseListener(new MouseAdapter() {
+        MouseInputAdapter miceThing = new MouseInputAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                mousePressed(e);
+            }
+
             public void mousePressed(MouseEvent l) {
                 int x = l.getX();
                 int y = l.getY();
                 x = x / cell_size;
                 y = y / cell_size;
-                if(sushi.play(x, y)) {
+                if (sushi.play(x, y)) {
                     //System.out.println(sushi.getBoard());
                     gamePanel.repaint(x * cell_size, y * cell_size, cell_size, cell_size);
                     if (sushi.win(x, y)) {
@@ -156,27 +202,26 @@ public class Softcandy {
                     }
                     sushi.nextPlayer();
                     salad();
+                    gamePanel.repaint(x * cell_size, y * cell_size, cell_size, cell_size);
                 }
-                else{
+                else {
                     hummus.setText("You can't play there try somewhere else");
                     Thread thread = new Thread(() -> {
-                            try
-                            {
-                                Thread.sleep(2000);
-                                hummus.setText("");
-                            }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
-                        });
+                        try {
+                            Thread.sleep(2000);
+                            hummus.setText("");
+                        } catch (InterruptedException ex) {
+                            Thread.currentThread().interrupt();
+                        }
+                    });
                     thread.start();
                 }
-                gamePanel.repaint(x * cell_size, y * cell_size, cell_size, cell_size);
-
-
             }
-        });
+        };
+
+        gamePanel.addMouseListener(miceThing);
+        gamePanel.addMouseMotionListener(miceThing);
+
         //test.setBackground(Color.darkGray);
         JScrollPane scrollFrame = new JScrollPane(gamePanel);
         gamePanel.setPreferredSize(new Dimension(blx + 2,bly + 2));
@@ -189,7 +234,6 @@ public class Softcandy {
         frame.add(scrollFrame);
         frame.revalidate();
         frame.repaint();
-
 
     }
 

@@ -1,6 +1,7 @@
 package Not_A_Default_Package;
 
 public class Player {
+    private int plc;
     private char pp;
     private String name;
     private String pic;
@@ -10,9 +11,10 @@ public class Player {
         this.name = name;
     }
     
-    public Player(String name, String pic) { // Can play.
+    public Player(String name, String pic, int colour) { // Can play.
         this.name = name;
         this.pic = pic;
+        plc = colour;
     }
 
     public boolean isDefault() {
@@ -33,5 +35,9 @@ public class Player {
             coconut =  " ";
 
         return coconut;
+    }
+
+    public int getColour() {
+        return plc;
     }
 }
