@@ -1,7 +1,7 @@
 package Not_A_Default_Package;
 
 public class Cellulose {
-	private Player pp;
+	Player pp;
 	private int x, y;
 	public Cellulose(int x, int y, Player pp) {
 		this.x = x;
@@ -28,13 +28,6 @@ public class Cellulose {
 	
 	public String toString() {
 		String coconut = "X: " + x + " Y: " + y + " Player: " + pp;
-		return coconut;
-	}
-	public String change_to_coconut() {
-		String coconut = pp.getCharS();
-		if(pp.isDefault())
-			coconut =  " ";
-		
 		return coconut;
 	}
 }

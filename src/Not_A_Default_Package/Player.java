@@ -2,36 +2,36 @@ package Not_A_Default_Package;
 
 public class Player {
     private char pp;
-    private String pn;
+    private String name;
     private String pic;
     
-    public Player(String pn, char pp) { // Can play.
+    public Player(String name, char pp) { // Can play.
         this.pp = pp;
-        this.pn = pn;
+        this.name = name;
     }
     
-    public Player(String pn, String pic) { // Can play.
-        this.pn = pn;
+    public Player(String name, String pic) { // Can play.
+        this.name = name;
         this.pic = pic;
     }
-    
-    public char getChar() {
-        return pp;
-    }
-    
-    public String getCharS() {
-        return String.valueOf(pp);
-    }
-    
+
     public boolean isDefault() {
-        return pn.equals("DefaultPlayer");
+        return name.equals("DefaultPlayer");
     }
     
     public String toString() {
-        return pn;
+        return name;
     }
 
     public String getPicLink() {
         return pic;
+    }
+
+    public String change_to_coconut() {
+        String coconut = String.valueOf(pp);
+        if(isDefault())
+            coconut =  " ";
+
+        return coconut;
     }
 }

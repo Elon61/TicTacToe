@@ -112,7 +112,7 @@ public class snobord {
 			}
 			
 			for(int x = 0; x!=this.x; x++) {
-				moshe += brocoli[x][this.y - y - 1].change_to_coconut();
+				moshe += brocoli[x][this.y - y - 1].pp.change_to_coconut();
 				moshe += " | ";
 			}
 			moshe += "\n   ";
