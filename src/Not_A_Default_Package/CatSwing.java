@@ -95,7 +95,7 @@ public class CatSwing extends JFrame {
         JButton star = new JButton("START THE GREATEST GAME EVER");
         star.setBounds(px(35), py(15), px(20), py(5));
         //star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(plnames.length, plnames, plimg, plc)));
-        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(20)));
+        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(2)));
         //star.setBackground();
         return star;
     }

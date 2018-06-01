@@ -125,14 +125,19 @@ public class Softcandy {
                 for(int i = dcell_x; i < Math.min(dcell_x2, b.length); i++) {
                     for(int j = dcell_y; j < Math.min(dcell_y2, b[i].length); j++) {
                         if(!b[i][j].isFiber()){
+                            try {
+                                img = ImageIO.read(new File("src/Not_A_Default_Package/tile.png"));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } // when not reading image again it loses it's colour?
                             player_colour = (b[i][j].getP().getColour());
                             xStart = i * cell_size + LINE_THICKNESS;
                             yStart = j * cell_size + LINE_THICKNESS;
                             recWidth = cell_size - LINE_THICKNESS;
                             recHeight = cell_size - LINE_THICKNESS;
-                            g.setColor(rainbow(player_colour));
+                            g.setColor(Color.white);
                             g.fillRect(xStart, yStart, recWidth, recHeight);
-                            cimg = colourImage(img, argbToArr(g.getColor().getRGB()), g.getColor().getRGB());
+                            cimg = colourImage(img, argbToArr(rainbow(player_colour).getRGB()));
                             g.drawImage(cimg, xStart, yStart,
                                     recWidth, recHeight,
                                     null);
@@ -141,7 +146,7 @@ public class Softcandy {
                 }
             }
 
-            private BufferedImage colourImage(BufferedImage img, int[] colour, int eye) {
+            private BufferedImage colourImage(BufferedImage img, int[] colour) {
                 int[] xy; int[] pixor; int argb;
                 for(int i = 0; i < img.getHeight(); i++){
                     for(int j = 0; j < img.getWidth(); j++){
@@ -193,12 +198,11 @@ public class Softcandy {
                 x = x / cell_size;
                 y = y / cell_size;
                 if (sushi.play(x, y)) {
-                    //System.out.println(sushi.getBoard());
-                    gamePanel.repaint(x * cell_size, y * cell_size, cell_size, cell_size);
                     if (sushi.win(x, y)) {
                         System.out.println("banana");
                         //Softcandy.win; // update gui for win stuff, kill the mouse listener and update labels
                         gamePanel.removeMouseListener(this);
+                        gamePanel.removeMouseMotionListener(this);
                     }
                     sushi.nextPlayer();
                     salad();
