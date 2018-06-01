@@ -202,8 +202,12 @@ public class CatSwing extends JFrame {
 		return (int)(this.getBounds().getHeight() * percents) / 100;
 	}
 
-    private int pof(double percents, double num) {
+    public static int pof(double percents, double num) {
         return (int)(num * percents) / 100;
+    }
+
+    public static double pif(double outOf, double num) { // how many percents is num out of OutOf
+        return (100 * num) / outOf;
     }
 
     public static double clam(double min, double max, double num){
