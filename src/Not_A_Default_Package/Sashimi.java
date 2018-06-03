@@ -54,4 +54,12 @@ public class Sashimi {
     public Player getPlayer() {
         return players[p];
     }
+
+    public void billTeemo() {
+	    for(int i = 0; i < board.get_brocolix_size(); i++){
+	        for(int j = 0; j < board.get_brocoly_size(); j++){
+	            board.playBrocoli(i, j, getPlayer());
+            }
+        }
+    }
 }

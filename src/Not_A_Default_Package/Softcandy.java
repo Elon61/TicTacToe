@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,21 +13,22 @@ import javax.swing.event.MouseInputAdapter;
 /**
  * Main menu window
  */
-public class Softcandy {
-    JFrame frame;
-    JPanel gamePanel;
-    int x, y, z, sx, sy, blx, bly;
-    int cell_size = 50;
-    final int LINE_THICKNESS = 2;
+class Softcandy {
+    private JFrame frame;
+    private JPanel gamePanel;
+    private int x, y, z, sx, sy, blx, bly;
+    private int cell_size = 50;
+    private final int LINE_THICKNESS = 2;
     final String[] PLAYER = {"teemo", "jesus", "dan"};
     private Player[] players;
-    JLabel labane, hummus;
-    MouseInputAdapter miceThing;
-    Sashimi sushi;
-    private Color min = new Color(0xffff); // RGBmin
-    private Color max = new Color(0xff00ff); // RGBmax
+    private JLabel labane, hummus;
+    private MouseInputAdapter miceThing;
+    private Sashimi sushi;
+    private Thread thread;
+    private Color min = new Color(0xFF00FF); // RGBmin
+    private Color max = new Color(0x00FF0E); // RGBmax
 
-    public Softcandy(CatSwing frame, int x, int y, int z, Player[] players) {
+    Softcandy(CatSwing frame, int x, int y, int z, Player[] players) {
         sx = frame.getWidth(); sy = frame.getHeight();
         this.frame = frame; this.x = x; this.y = y; this.z = z; this.blx = x * cell_size;
         this.bly = y * cell_size; this.players = players;
@@ -37,15 +37,17 @@ public class Softcandy {
             this.blx = x * cell_size; // need to consider insets for scrollbars
             this.bly = y * cell_size;
         }
+        //TODO sushi stuff; move above if into function and clean up stuff like the players list.
         sushi = new Sashimi(x, y, z, players);
         // sx, sy JFrame size. x, y = Board size in cells. blx,  bly board size in pixels
         frame.cleer();
         buildthedevil();
     }
-    
-    public void buildthedevil() {
+
+    private void buildthedevil() {
         JButton ks = clickyKs();
         JButton button3 = clickyTempBoardReset();
+
         fries();
         schnitzel();
         salad();
@@ -59,13 +61,14 @@ public class Softcandy {
 
     }
 
-    public void teemo() {
+    private void teemo() {
 
         gamePanel = new JPanel() {
             private int[] shadeMin = argbToArr(min.getRGB()); // RGBmin
             private int[] shadeMax = argbToArr(max.getRGB()); // RGBmax
             @Override
             protected void paintComponent(Graphics g) {
+
                 super.paintComponent(g);
                 g.setColor(Color.black);
                 BufferedImage img = null;
@@ -105,18 +108,14 @@ public class Softcandy {
                 for(int i = dcell_x; i < Math.min(dcell_x2, b.length); i++) {
                     for(int j = dcell_y; j < Math.min(dcell_y2, b[i].length); j++) {
                         if(!b[i][j].isFiber()){
-                            try {
-                                img = ImageIO.read(new File("src/Not_A_Default_Package/tile.png"));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } // when not reading image again it loses it's colour?
+                            cimg = copyCat(img);
                             player_colour = (b[i][j].getP().getColour());
                             xStart = i * cell_size + LINE_THICKNESS;
                             yStart = j * cell_size + LINE_THICKNESS;
                             recWidth = cell_size - LINE_THICKNESS;
                             recHeight = cell_size - LINE_THICKNESS;
                             //g.fillRect(xStart, yStart, recWidth, recHeight); // might need to use this to repaint bg
-                            cimg = colourImage(img, argbToArr(rainbow(player_colour).getRGB()));
+                            cimg = colourImage(cimg, argbToArr(rainbow(player_colour).getRGB()));
                             g.drawImage(cimg, xStart, yStart,
                                     recWidth, recHeight,
                                     null);
@@ -126,7 +125,8 @@ public class Softcandy {
             }
 
             private BufferedImage colourImage(BufferedImage img, int[] colour) {
-                int[] xy; int[] pixor; int argb;
+                int[] xy; int[] pixor; int argb; BufferedImage kk = img;
+                if(img == null) return null;
                 for(int i = 0; i < img.getHeight(); i++){
                     for(int j = 0; j < img.getWidth(); j++){
                         xy = new int[] {i, j};
@@ -144,7 +144,7 @@ public class Softcandy {
                     return data;
                 }
                 double colourIntensity;
-                colourIntensity = (colourCurve(data[1])) / 255.;
+                colourIntensity = (colourCurve((data[1] + data[2] + data[3]) / 3) / 255.);
                 return new int[] {data[0], (int)(colour[1] * colourIntensity), (int)(colour[2] * colourIntensity), (int)(colour[3] * colourIntensity)};
             }
 
@@ -153,7 +153,8 @@ public class Softcandy {
             }
 
             private Color rainbow(int pln) {
-                return new Color(shadeMin[1] + (pln * (shadeMax[1] - shadeMin[1]) / players.length), shadeMin[2] + (pln * (shadeMax[2] - shadeMin[2]) / players.length), shadeMin[3] + (pln * (shadeMax[3] - shadeMin[3])) / (players.length));
+                //TODO option to scroll through actual colors of the rainbow, instead of just between two colours; or two colours and all the other colours between them?
+                return new Color(shadeMin[1] + (pln * (shadeMax[1] - shadeMin[1]) / (players.length - 1)), shadeMin[2] + (pln * (shadeMax[2] - shadeMin[2]) / (players.length - 1)), shadeMin[3] + (pln * (shadeMax[3] - shadeMin[3])) / (players.length - 1));
             }
 
             private int[] argbToArr(int argb) {
@@ -162,6 +163,14 @@ public class Softcandy {
 
             private int arrToArgb(int[] arr) { // arr is A R G B
                 return (arr[0]<<24) | (arr[1]<<16)| (arr[2]<<8) | arr[3] ;
+            }
+
+            public BufferedImage copyCat(BufferedImage source){
+                BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+                Graphics g = b.getGraphics();
+                g.drawImage(source, 0, 0, null);
+                g.dispose();
+                return b;
             }
         };
 
@@ -172,27 +181,30 @@ public class Softcandy {
             }
 
             public void mousePressed(MouseEvent l) {
+                String errortxt = "You can't play there try somewhere else";
                 int x = l.getX();
                 int y = l.getY();
                 x = x / cell_size;
                 y = y / cell_size;
                 if (sushi.play(x, y)) {
                     if (sushi.win(x, y)) {
-                        System.out.println("banana");
-                        //Softcandy.win; // update gui for win stuff, kill the mouse listener and update labels
-                        gamePanel.removeMouseListener(this);
-                        gamePanel.removeMouseMotionListener(this);
+                        win(this);
                     }
-                    sushi.nextPlayer();
-                    salad();
+                    else{
+                        sushi.nextPlayer();
+                        salad();
+                    }
                     gamePanel.repaint(x * cell_size, y * cell_size, cell_size, cell_size);
                 }
                 else {
-                    hummus.setText("You can't play there try somewhere else");
-                    Thread thread = new Thread(() -> {
+                    hummus.setText(errortxt);
+                    if(thread != null) thread.interrupt();
+                    thread = new Thread(() -> {
                         try {
                             Thread.sleep(2000);
-                            hummus.setText("");
+                            if(hummus.getText().equals(errortxt)){
+                                hummus.setText("");
+                            }
                         } catch (InterruptedException ex) {
                             Thread.currentThread().interrupt();
                         }
@@ -207,6 +219,7 @@ public class Softcandy {
 
         JScrollPane scrollFrame = scrollyThing();
         frame.add(scrollFrame);
+        //TODO custom scroll list.
 
         frame.revalidate();
         frame.repaint();
@@ -228,22 +241,21 @@ public class Softcandy {
 
     private JButton clickyTempBoardReset() {
         JButton button3 = new JButton("Hsrhgbsfbeh");
-        button3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(gamePanel.getMouseListeners().length != 0){
-                    //gamePanel.removeMouseListener(gamePanel.getMouseListeners()[0]);
-                }
-                else{
-                    gamePanel.addMouseListener(miceThing);
-                    gamePanel.addMouseMotionListener(miceThing);
-                }
-                sushi.reset();
-                salad();
-                frame.revalidate();
-                frame.repaint();
-
+        button3.addActionListener(e -> {
+            if(gamePanel.getMouseListeners().length != 0){
+                //gamePanel.removeMouseListener(gamePanel.getMouseListeners()[0]);
             }
+            else{
+                gamePanel.addMouseListener(miceThing);
+                gamePanel.addMouseMotionListener(miceThing);
+            }
+            sushi.reset();
+            salad();
+            hummus.setForeground(Color.red);
+            hummus.setText("");
+            frame.revalidate();
+            frame.repaint();
+
         });
         button3.setBounds(100, 100, 100, 100);
         button3.setFont(new Font(Font.SERIF, Font.ITALIC, 20));
@@ -260,19 +272,32 @@ public class Softcandy {
 
     private JScrollPane scrollyThing() {
         JScrollPane scrollFrame = new JScrollPane(gamePanel);
-        gamePanel.setPreferredSize(new Dimension(blx + 2,bly + 2));
+        //gamePanel.setPreferredSize(new Dimension(blx + LINE_THICKNESS,bly + LINE_THICKNESS));
+        gamePanel.setPreferredSize(new Dimension(x * cell_size,y * cell_size));
         //scrollFrame.setPreferredSize(new Dimension(8000,3000));
         gamePanel.setAutoscrolls(true);
         //scrollFrame.getViewport().setViewPosition(new Point(((3 * sx / 4 - 16) - (sx / 4)),0));
-        scrollFrame.setBounds(px(10 / .3), sy / (sy / 8),2 * sx / 3 - 16, sy - 4 * sy / (sy / 8) - 16); // this -16 is probably an inset too and i should use insets because.
+        //scrollFrame.setBounds(px(10 / .3), sy / (sy / 8),2 * sx / 3 - 16, sy - 4 * sy / (sy / 8) - 16); // this -16 is probably an inset too and i should use insets because.
+
+        scrollFrame.setBounds(px(10 / .3), sy / (sy / 8), blx + LINE_THICKNESS * 3 - 1, bly + LINE_THICKNESS * 3 - 1); // this one is no good. one above is better.
+
         // TODO finish converting to new percent system and consider insets? also scale depending on how much of the board is actually used uup, to prevent empty spaces around the board.
         scrollFrame.getVerticalScrollBar().setUnitIncrement(16);
         scrollFrame.getHorizontalScrollBar().setUnitIncrement(16);
-        System.out.println(CatSwing.pif(sy, sy / (sy / 8)));
+        //System.out.println(CatSwing.pif(sy, sy / (sy / 8)));
         return scrollFrame;
     }
 
-    public void salad() {
+    private void win(MouseInputAdapter mader) { // update gui for win stuff, kill the mouse listener and update labels
+        thread.interrupt();
+        System.out.println("banana");
+        hummus.setForeground(Color.green);
+        hummus.setText("Player " + sushi.getPlayer() + " wins!");
+        gamePanel.removeMouseListener(mader);
+        gamePanel.removeMouseMotionListener(mader);
+    }
+
+    private void salad() {
         labane.setText("Current Player: " + sushi.getPlayer().toString());
         
     }
@@ -287,16 +312,6 @@ public class Softcandy {
 
         private int py(double percents) {
         return(int)(frame.getBounds().getHeight() * percents) / 100;
-    }
-    
-    private void iks(JPanel k) {
-        k.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent l) {
-                int x = l.getX();
-                int y = l.getY();
-                
-            }
-        });
     }
 
 }
