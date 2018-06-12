@@ -2,6 +2,7 @@ package Not_A_Default_Package;
 
 public class Player {
     private int plc;
+    private int n;
     private char pp;
     private String pn;
     private String pic;
@@ -11,9 +12,10 @@ public class Player {
         this.pn = pn;
     }
     
-    public Player(String pn, String pic, int colour) { // Can play.
+    public Player(String pn, String pic, int colour, int n) { // Can play.
         this.pn = pn;
         this.pic = pic;
+        this.n = n;
         plc = colour;
     }
 
@@ -39,5 +41,9 @@ public class Player {
 
     public int getColour() {
         return plc;
+    }
+
+    public int num() {
+        return n;
     }
 }

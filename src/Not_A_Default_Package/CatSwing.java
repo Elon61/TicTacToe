@@ -16,33 +16,33 @@ import javax.sound.sampled.Clip;
  * Main menu window
  */
 public class CatSwing extends JFrame {
-	int x = 30; // board size
-	int y = 30; // board size
-	private int z = 45; // win size
-	private String[] plnames = {"Moshe", "Moshe's friend teemo"};
-	private String[] plimg = {"1", "2"};
-	private int[] plc = {1, 2};
+    int x = 30; // board size
+    int y = 30; // board size
+    private int z = 45; // win size
+    private String[] plnames = {"Moshe", "Moshe's friend teemo"};
+    private String[] plimg = {"1", "2"};
+    private int[] plc = {1, 2};
     private java.awt.geom.GeneralPath gp;
     //private String[] plimg = {"image.png", "image2.png"};
 
-	public CatSwing() {
-		setLayout(null);
-		startRiceMaker();
-		sizeMagic();
-		setVisible(true);
-	}
+    public CatSwing() {
+        setLayout(null);
+        startRiceMaker();
+        sizeMagic();
+        setVisible(true);
+    }
 
-	private void startRiceMaker() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int scx = screenSize.width;
-		int scy = screenSize.height;
-		setSize(scx * 9 / 10, scy * 9/10);
-		setLocation(scx / 20, scy / 20);
-		iks();
-		clickyThings();
-	}
+    private void startRiceMaker() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int scx = screenSize.width;
+        int scy = screenSize.height;
+        setSize(scx * 9 / 10, scy * 9/10);
+        setLocation(scx / 20, scy / 20);
+        iks();
+        clickyThings();
+    }
 
-	private void clickyThings() {
+    private void clickyThings() {
         JButton star = clickyStar();
         JButton opt = clickyOpt();
         JButton ks = clickyKs();
@@ -95,7 +95,7 @@ public class CatSwing extends JFrame {
         JButton star = new JButton("START THE GREATEST GAME EVER");
         star.setBounds(px(35), py(15), px(20), py(5));
         //star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(plnames.length, plnames, plimg, plc)));
-        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(2)));
+        star.addActionListener(e -> new Softcandy(this, x, y, z, Sashimi.blade(30)));
         //star.setBackground();
         return star;
     }
@@ -118,12 +118,12 @@ public class CatSwing extends JFrame {
     }
 
     private void iks() {
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-					}
-		});
-	}
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+                    }
+        });
+    }
 
     @Override
     public void paint(Graphics g){
@@ -175,7 +175,7 @@ public class CatSwing extends JFrame {
         this.setResizable(false);
     }
 
-	private static void moozic(){
+    private static void moozic(){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("C:\\Users\\hp250G3-00\\IdeaProjects\\TicTacToe\\src\\Not_A_Default_Package\\noc.wav").getAbsoluteFile());
             Clip clip = AudioSystem.getClip();
@@ -188,19 +188,19 @@ public class CatSwing extends JFrame {
         }
     }
 
-	public void cleer() {
-		this.getContentPane().removeAll();
+    public void cleer() {
+        this.getContentPane().removeAll();
         this.revalidate();
         this.repaint();
-	}
+    }
 
     private int px(double percents) {
-		return (int)(this.getBounds().getWidth() * percents) / 100;
-	}
+        return (int)(this.getBounds().getWidth() * percents) / 100;
+    }
 
-	private int py(double percents) {
-		return (int)(this.getBounds().getHeight() * percents) / 100;
-	}
+    private int py(double percents) {
+        return (int)(this.getBounds().getHeight() * percents) / 100;
+    }
 
     public static int pof(double percents, double num) {
         return (int)(num * percents) / 100;
@@ -211,8 +211,8 @@ public class CatSwing extends JFrame {
     }
 
     public static double clam(double min, double max, double num){
-	    return Math.max(min, Math.min(max, num));
-	}
+        return Math.max(min, Math.min(max, num));
+    }
 
     public static void main(String[] args) {
         CatSwing s = new CatSwing();

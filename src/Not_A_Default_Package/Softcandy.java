@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
+import static java.lang.Math.min;
+
 /**
  * Main menu window
  */
@@ -103,19 +105,21 @@ class Softcandy {
                 int dcell_x2 = (int)((x + bounds.getWidth() + cell_size - 1) / cell_size);
                 int dcell_y = (y / cell_size);
                 int dcell_y2 = (int)((y + bounds.getHeight() + cell_size - 1) / cell_size);
-                int player_colour; int xStart; int yStart; int recWidth; int recHeight;
+                Color player_colour; int xStart; int yStart; int recWidth; int recHeight;
 
-                for(int i = dcell_x; i < Math.min(dcell_x2, b.length); i++) {
-                    for(int j = dcell_y; j < Math.min(dcell_y2, b[i].length); j++) {
+                for(int i = dcell_x; i < min(dcell_x2, b.length); i++) {
+                    for(int j = dcell_y; j < min(dcell_y2, b[i].length); j++) {
                         if(!b[i][j].isFiber()){
                             cimg = copyCat(img);
-                            player_colour = (b[i][j].getP().getColour());
+                            //player_colour = (b[i][j].getP().getColour());
+                            player_colour = FullColour(players.length)[b[i][j].getP().num()];
                             xStart = i * cell_size + LINE_THICKNESS;
                             yStart = j * cell_size + LINE_THICKNESS;
                             recWidth = cell_size - LINE_THICKNESS;
                             recHeight = cell_size - LINE_THICKNESS;
                             //g.fillRect(xStart, yStart, recWidth, recHeight); // might need to use this to repaint bg
-                            cimg = colourImage(cimg, argbToArr(rainbow(player_colour).getRGB()));
+                            //cimg = colourImage(cimg, argbToArr(rainbow(player_colour).getRGB()));
+                            cimg = colourImage(cimg, argbToArr(player_colour.getRGB()));
                             g.drawImage(cimg, xStart, yStart,
                                     recWidth, recHeight,
                                     null);
@@ -163,6 +167,47 @@ class Softcandy {
 
             private int arrToArgb(int[] arr) { // arr is A R G B
                 return (arr[0]<<24) | (arr[1]<<16)| (arr[2]<<8) | arr[3] ;
+            }
+
+            private Color[] FullColour(int pn) {
+                Color[] clr = new Color[pn];
+                int maxD = 255 * 6;
+                double d = min((double)maxD / pn, 166);
+                System.out.println(d);
+                int[] rgb;
+                for (int i = 0; i < pn; i++) {
+                    rgb = ColourD((int) (d * i));
+                    clr[i] = new Color(rgb[0], rgb[1], rgb[2]);
+                }
+                return clr;
+            }
+
+            private int[] ColourD(int dist) {
+                int t = 0, r = 255, g = 0, b = 0;
+                boolean rs = true, gs = false, bs = false;
+                int[] ct;
+                ct = ColourSD(dist, t, b, bs); b = ct[0]; t = ct[1]; bs = !bs;
+
+                ct = ColourSD(dist, t, r, rs);r = ct[0]; t = ct[1]; rs = !rs;
+
+                ct = ColourSD(dist, t, g, gs); g = ct[0]; t = ct[1]; gs = !gs;
+
+                ct = ColourSD(dist, t, b, bs); b = ct[0]; t = ct[1]; bs = !bs;
+
+                ct = ColourSD(dist, t, r, rs); r = ct[0]; t = ct[1]; rs = !rs;
+
+                ct = ColourSD(dist, t, g, gs); g = ct[0]; t = ct[1]; gs = !gs;
+                return new int[]{r, g, b};
+            }
+
+            private int[] ColourSD(int dist, int t, int c, boolean s) { // dist is the how far away i want to go from red(255, 0, 0). t is how far i am already, c is the shade(r, g or b) currently being modified, bool s is whether going up or down.
+                int sp = min(dist - t, 255);
+                t += sp;
+                if (!s)
+                    c += sp;
+                else
+                    c -= sp;
+                return new int[]{c, t};
             }
 
             public BufferedImage copyCat(BufferedImage source){
@@ -277,9 +322,9 @@ class Softcandy {
         //scrollFrame.setPreferredSize(new Dimension(8000,3000));
         gamePanel.setAutoscrolls(true);
         //scrollFrame.getViewport().setViewPosition(new Point(((3 * sx / 4 - 16) - (sx / 4)),0));
-        //scrollFrame.setBounds(px(10 / .3), sy / (sy / 8),2 * sx / 3 - 16, sy - 4 * sy / (sy / 8) - 16); // this -16 is probably an inset too and i should use insets because.
+        scrollFrame.setBounds(px(10 / .3), sy / (sy / 8),2 * sx / 3 - 16, sy - 4 * sy / (sy / 8) - 16); // this -16 is probably an inset too and i should use insets because.
 
-        scrollFrame.setBounds(px(10 / .3), sy / (sy / 8), blx + LINE_THICKNESS * 3 - 1, bly + LINE_THICKNESS * 3 - 1); // this one is no good. one above is better.
+        //scrollFrame.setBounds(px(10 / .3), sy / (sy / 8), blx + LINE_THICKNESS * 3 - 1, bly + LINE_THICKNESS * 3 - 1); // this one is no good. one above is better.
 
         // TODO finish converting to new percent system and consider insets? also scale depending on how much of the board is actually used uup, to prevent empty spaces around the board.
         scrollFrame.getVerticalScrollBar().setUnitIncrement(16);
