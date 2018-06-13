@@ -42,6 +42,7 @@ class Softcandy {
         //TODO sushi stuff; move above if into function and clean up stuff like the players list.
         sushi = new Sashimi(x, y, z, players);
         // sx, sy JFrame size. x, y = Board size in cells. blx,  bly board size in pixels
+        fillBoard();
         frame.cleer();
         buildthedevil();
     }
@@ -173,7 +174,6 @@ class Softcandy {
                 Color[] clr = new Color[pn];
                 int maxD = 255 * 6;
                 double d = min((double)maxD / pn, 166);
-                System.out.println(d);
                 int[] rgb;
                 for (int i = 0; i < pn; i++) {
                     rgb = ColourD((int) (d * i));
@@ -355,8 +355,17 @@ class Softcandy {
         return (int)(frame.getBounds().getWidth() * percents) / 100;
     }
 
-        private int py(double percents) {
+    private int py(double percents) {
         return(int)(frame.getBounds().getHeight() * percents) / 100;
+    }
+
+    private void fillBoard(){
+        snobord a = sushi.getBoard();
+        for(int i = 0; i < a.get_brocolix_size(); i++){
+            for(int j = 0; j < a.get_brocoly_size(); j++){
+                a.playBrocoli(i, j, players[i * j % players.length]);
+            }
+        }
     }
 
 }

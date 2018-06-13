@@ -16,8 +16,8 @@ import javax.sound.sampled.Clip;
  * Main menu window
  */
 public class CatSwing extends JFrame {
-    int x = 30; // board size
-    int y = 30; // board size
+    int x = 300; // board size
+    int y = 300; // board size
     private int z = 45; // win size
     private String[] plnames = {"Moshe", "Moshe's friend teemo"};
     private String[] plimg = {"1", "2"};
