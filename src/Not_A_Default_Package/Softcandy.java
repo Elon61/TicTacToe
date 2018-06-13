@@ -106,24 +106,29 @@ class Softcandy {
                 int dcell_x2 = (int)((x + bounds.getWidth() + cell_size - 1) / cell_size);
                 int dcell_y = (y / cell_size);
                 int dcell_y2 = (int)((y + bounds.getHeight() + cell_size - 1) / cell_size);
-                Color player_colour; int xStart; int yStart; int recWidth; int recHeight;
+                Color[] player_colours; Color player_colour; int xStart; int yStart; int recWidth; int recHeight;
 
-                for(int i = dcell_x; i < min(dcell_x2, b.length); i++) {
-                    for(int j = dcell_y; j < min(dcell_y2, b[i].length); j++) {
-                        if(!b[i][j].isFiber()){
-                            cimg = copyCat(img);
-                            //player_colour = (b[i][j].getP().getColour());
-                            player_colour = FullColour(players.length)[b[i][j].getP().num()];
-                            xStart = i * cell_size + LINE_THICKNESS;
-                            yStart = j * cell_size + LINE_THICKNESS;
-                            recWidth = cell_size - LINE_THICKNESS;
-                            recHeight = cell_size - LINE_THICKNESS;
-                            //g.fillRect(xStart, yStart, recWidth, recHeight); // might need to use this to repaint bg
-                            //cimg = colourImage(cimg, argbToArr(rainbow(player_colour).getRGB()));
-                            cimg = colourImage(cimg, argbToArr(player_colour.getRGB()));
-                            g.drawImage(cimg, xStart, yStart,
-                                    recWidth, recHeight,
-                                    null);
+                player_colours = FullColour(players.length);
+                for (Player one: players) {
+                    player_colour = player_colours[one.num()];
+                    cimg = copyCat(img);
+                    cimg = colourImage(cimg, argbToArr(player_colour.getRGB()));
+                    for(int i = dcell_x; i < min(dcell_x2, b.length); i++) {
+                        for(int j = dcell_y; j < min(dcell_y2, b[i].length); j++) {
+                            if(!b[i][j].isFiber()){
+                                //player_colour = (b[i][j].getP().getColour());
+                                xStart = i * cell_size + LINE_THICKNESS;
+                                yStart = j * cell_size + LINE_THICKNESS;
+                                recWidth = cell_size - LINE_THICKNESS;
+                                recHeight = cell_size - LINE_THICKNESS;
+                                //g.fillRect(xStart, yStart, recWidth, recHeight); // might need to use this to repaint bg
+                                //cimg = colourImage(cimg, argbToArr(rainbow(player_colour).getRGB()));
+                                if (one.equals(b[i][j].getP())) {
+                                    g.drawImage(cimg, xStart, yStart,
+                                            recWidth, recHeight,
+                                            null);
+                                }
+                            }
                         }
                     }
                 }
@@ -171,6 +176,8 @@ class Softcandy {
             }
 
             private Color[] FullColour(int pn) {
+                long a, b;
+                a = System.nanoTime();
                 Color[] clr = new Color[pn];
                 int maxD = 255 * 6;
                 double d = min((double)maxD / pn, 166);
@@ -179,6 +186,8 @@ class Softcandy {
                     rgb = ColourD((int) (d * i));
                     clr[i] = new Color(rgb[0], rgb[1], rgb[2]);
                 }
+                b = System.nanoTime();
+                System.out.println(b - a);
                 return clr;
             }
 
