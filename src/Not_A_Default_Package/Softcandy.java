@@ -163,7 +163,7 @@ class Softcandy {
             }
 
             private Color rainbow(int pln) {
-                //TODO option to scroll through actual colors of the rainbow, instead of just between two colours; or two colours and all the other colours between them?
+                //TODO option to scroll through two colours and all the other colours between them?
                 return new Color(shadeMin[1] + (pln * (shadeMax[1] - shadeMin[1]) / (players.length - 1)), shadeMin[2] + (pln * (shadeMax[2] - shadeMin[2]) / (players.length - 1)), shadeMin[3] + (pln * (shadeMax[3] - shadeMin[3])) / (players.length - 1));
             }
 
