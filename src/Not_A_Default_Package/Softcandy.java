@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -42,7 +43,6 @@ class Softcandy {
         //TODO sushi stuff; move above if into function and clean up stuff like the players list.
         sushi = new Sashimi(x, y, z, players);
         // sx, sy JFrame size. x, y = Board size in cells. blx,  bly board size in pixels
-        fillBoard();
         frame.cleer();
         buildthedevil();
     }
@@ -187,7 +187,6 @@ class Softcandy {
                     clr[i] = new Color(rgb[0], rgb[1], rgb[2]);
                 }
                 b = System.nanoTime();
-                System.out.println(b - a);
                 return clr;
             }
 
@@ -235,6 +234,7 @@ class Softcandy {
             }
 
             public void mousePressed(MouseEvent l) {
+                long abc = System.nanoTime();
                 String errortxt = "You can't play there try somewhere else";
                 int x = l.getX();
                 int y = l.getY();
@@ -265,6 +265,7 @@ class Softcandy {
                     });
                     thread.start();
                 }
+                System.out.println((System.nanoTime() - abc));
             }
         };
 
